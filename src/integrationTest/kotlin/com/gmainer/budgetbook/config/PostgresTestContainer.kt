@@ -13,7 +13,7 @@ interface PostgresTestContainer {
         private val log by logger()
 
         @Container
-        val tenant1Container: PostgreSQLContainer<*> = PostgreSQLContainer("postgres:latest")
+        val testContainer: PostgreSQLContainer<*> = PostgreSQLContainer("postgres:latest")
             .withUsername("user1")
             .withPassword("password1")
             .withDatabaseName("tenant1")
@@ -22,16 +22,11 @@ interface PostgresTestContainer {
         @DynamicPropertySource
         fun setupProperties(registry: DynamicPropertyRegistry) {
             try {
-                tenant1Container.start()
-                val jdbcUrl = tenant1Container.jdbcUrl
-                val mappedPort = tenant1Container.getMappedPort(5432)
+                testContainer.start()
 
-                log.info("PostgreSQL container started at $jdbcUrl")
-                log.info("PostgreSQL container mapped port $mappedPort")
-
-                registry.add("tenants.tenant1.datasource.url") { tenant1Container.jdbcUrl }
-                registry.add("tenants.tenant1.datasource.username") { tenant1Container.username }
-                registry.add("tenants.tenant1.datasource.password") { tenant1Container.password }
+                registry.add("spring.datasource.url") { testContainer.jdbcUrl }
+                registry.add("spring.datasource.username") { testContainer.username }
+                registry.add("spring.datasource.password") { testContainer.password }
             } catch (e: Exception) {
                 log.error("Could not start PostgreSQL container: ${e.message}", e)
                 throw RuntimeException("Could not start PostgreSQL container", e)

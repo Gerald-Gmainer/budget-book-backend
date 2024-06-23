@@ -3,9 +3,9 @@ spring:
     application:
         name: budget-book-backend
     datasource:
-        url: jdbc:postgresql://localhost:5432/postgres
-        username: postgres
-        password: postgres
+        url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/postgres
+        username: ${DATABASE_USERNAME:postgres}
+        password: ${DATABASE_PASSWORD:postgres}
         driver-class-name: org.postgresql.Driver
     jpa:
         properties:

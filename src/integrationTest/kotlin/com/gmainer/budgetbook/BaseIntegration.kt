@@ -6,6 +6,7 @@ import com.gmainer.budgetbook.config.KeycloakTestContainer
 import com.gmainer.budgetbook.config.PostgresTestContainer
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInstance
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -40,12 +41,19 @@ class BaseIntegration : KeycloakTestContainer, PostgresTestContainer {
         WireMock.configureFor("localhost", wireMockServer.port())
     }
 
+    @BeforeEach
+    fun setupDb() {
+        val databasePopulator = ResourceDatabasePopulator()
+        databasePopulator.addScript(ClassPathResource("sql/setup.sql"))
+        databasePopulator.execute(dataSource)
+    }
+
     @AfterEach
     fun cleanup() {
         wireMockServer.resetMappings()
 
         val databasePopulator = ResourceDatabasePopulator()
-        databasePopulator.addScript(ClassPathResource("sql/cleanup/cleanup_database.sql"))
+        databasePopulator.addScript(ClassPathResource("sql/cleanup.sql"))
         databasePopulator.execute(dataSource)
     }
 
