@@ -1,0 +1,11 @@
+spring:
+    main:
+        allow-bean-definition-overriding: true
+    flyway:
+        enabled: true
+        locations: classpath:/migration
+        baselineOnMigrate: true
+        driver-class-name: org.postgresql.Driver
+    jpa:
+        hibernate:
+            ddl-auto: none

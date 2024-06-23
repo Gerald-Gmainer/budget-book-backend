@@ -1,0 +1,27 @@
+debug: true
+spring:
+    application:
+        name: budget-book-backend
+    datasource:
+        url: jdbc:postgresql://localhost:5432/postgres
+        username: postgres
+        password: postgres
+        driver-class-name: org.postgresql.Driver
+    jpa:
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.PostgreSQLDialect
+
+        hibernate:
+            ddl-auto: none
+        show-sql: true
+    flyway:
+        enabled: true
+        locations: classpath:/migration
+
+keycloak:
+    realm: ${KEYCLOAK_REALM:budgetbook}
+    clientId: ${KEYCLOAK_CLIENT_ID:budgetbook-app}
+    authUrl: ${KEYCLOAK_URL:http://keycloak:8080}
+    secretkey: ${KEYCLOAK_CLIENT_SECRET:QDqaNEoz3reSsf7IpiG0VlohEBiA3RKF}
+

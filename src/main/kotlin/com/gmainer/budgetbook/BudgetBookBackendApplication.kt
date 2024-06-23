@@ -1,4 +1,4 @@
-package com.gmainer.budget_book_backend
+package com.gmainer.budgetbook
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class BudgetBookBackendApplication
 
 fun main(args: Array<String>) {
-	runApplication<BudgetBookBackendApplication>(*args)
+    runApplication<BudgetBookBackendApplication>(*args)
 }

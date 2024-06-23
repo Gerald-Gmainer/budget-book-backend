@@ -1,0 +1,43 @@
+style:
+    ReturnCount:
+        max: 4
+    WildcardImport:
+        active: false
+    FunctionOnlyReturningConstant:
+        active: false
+    MagicNumber:
+        excludes: [ '**/test/**', '**/integrationTest/**' ]
+    VarCouldBeVal:
+        excludes: [ '**/test/**', '**/integrationTest/**' ]
+
+naming:
+    FunctionNaming:
+        excludes: [ '**/integrationTest/**','**/test/**' ]
+
+formatting:
+    autoCorrect: true
+    NoSemicolons:
+        active: true
+    NoWildcardImports:
+        active: false
+    MaximumLineLength:
+        maxLineLength: 180
+
+naming:
+    FunctionNaming:
+        excludes: [ '**/integrationTest/**','**/test/**' ]
+
+complexity:
+    LargeClass:
+        excludes: [ '**/integrationTest/**','**/test/**' ]
+    LongParameterList:
+        active: false
+    LongMethod:
+        excludes: [ '**/integrationTest/**','**/test/**' ]
+    TooManyFunctions:
+        excludes: [ '**/integrationTest/**','**/test/**' ]
+        ignorePrivate: true
+
+potential-bugs:
+    UnsafeCallOnNullableType:
+        excludes: [ '**/integrationTest/**','**/test/**' ]

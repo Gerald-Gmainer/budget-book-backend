@@ -1,4 +1,4 @@
-package com.gmainer.budget_book_backend
+package com.gmainer.budgetbook
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
