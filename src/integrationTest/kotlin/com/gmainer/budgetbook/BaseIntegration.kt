@@ -61,7 +61,6 @@ class BaseIntegration : KeycloakTestContainer, PostgresTestContainer {
         return mockMvc.get(path) {
             token.let {
                 authHeader(it)
-                header(HttpHeaders.ACCEPT_LANGUAGE)
             }
         }
     }
@@ -83,7 +82,6 @@ class BaseIntegration : KeycloakTestContainer, PostgresTestContainer {
             authHeader(token)
             content = jsonContent
             contentType = MediaType.APPLICATION_JSON
-            header(HttpHeaders.ACCEPT_LANGUAGE)
         }
     }
 
@@ -96,7 +94,7 @@ class BaseIntegration : KeycloakTestContainer, PostgresTestContainer {
 
     private fun MockHttpServletRequestDsl.authHeader(token: String?) {
         token?.let {
-            header(HttpHeaders.AUTHORIZATION, token)
+            header(HttpHeaders.AUTHORIZATION, "Bearer $token")
         }
     }
 }

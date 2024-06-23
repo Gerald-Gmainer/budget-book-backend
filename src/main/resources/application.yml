@@ -21,7 +21,12 @@ spring:
 
 keycloak:
     realm: ${KEYCLOAK_REALM:budgetbook}
-    clientId: ${KEYCLOAK_CLIENT_ID:budgetbook-app}
-    authUrl: ${KEYCLOAK_URL:http://keycloak:8080}
-    secretkey: ${KEYCLOAK_CLIENT_SECRET:QDqaNEoz3reSsf7IpiG0VlohEBiA3RKF}
+    resource: ${KEYCLOAK_CLIENT_ID:budgetbook-app}
+    auth-server-url: ${KEYCLOAK_URL:http://keycloak:8080}
+    credentials:
+        secret: ${KEYCLOAK_CLIENT_SECRET:QDqaNEoz3reSsf7IpiG0VlohEBiA3RKF}
+
+keycloak-admin:
+    username: admin-username
+    password: admin-password
 
