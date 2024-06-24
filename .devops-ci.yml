@@ -1,6 +1,9 @@
 trigger:
     branches:
-        - main
+        include:
+            - main
+            - master
+            - 'refs/tags/*'
 
 variables:
     JDK_VERSION: '21'
