@@ -1,3 +1,3 @@
-DELETE
-FROM bookings;
-
+--DELETE
+--FROM bookings;
+select 1;

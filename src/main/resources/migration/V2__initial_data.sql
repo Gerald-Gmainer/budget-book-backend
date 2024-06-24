@@ -228,3 +228,56 @@ SELECT 'Public Transit',
        (SELECT id FROM public.category_icons WHERE name = 'train'),
        (SELECT id FROM public.category_colors WHERE name = 'teal'),
        (SELECT id FROM public.categories WHERE name = 'Transport');
+
+---
+
+INSERT INTO bookings (booking_date, description, amount, category_id, account_id)
+VALUES ('2024-06-01', 'Beer', 4.25,
+        (SELECT id FROM categories WHERE name = 'Alcohol'),
+        (SELECT id FROM accounts WHERE name = 'Cash'));
+
+INSERT INTO bookings (booking_date, description, amount, category_id, account_id)
+VALUES ('2024-06-05', 'Grocery Shopping', 150.75,
+        (SELECT id FROM categories WHERE name = 'Groceries'),
+        (SELECT id FROM accounts WHERE name = 'Cash'));
+
+INSERT INTO bookings (booking_date, description, amount, category_id, account_id)
+VALUES ('2024-06-10', 'Car Maintenance', 300.00,
+        (SELECT id FROM categories WHERE name = 'Car'),
+        (SELECT id FROM accounts WHERE name = 'Debit Card'));
+
+INSERT INTO bookings (booking_date, description, amount, category_id, account_id)
+VALUES ('2024-06-15', 'Dining Out', 60.50,
+        (SELECT id FROM categories WHERE name = 'Eating Out'),
+        (SELECT id FROM accounts WHERE name = 'Cash'));
+
+INSERT INTO bookings (booking_date, description, amount, category_id, account_id)
+VALUES ('2024-06-20', 'Rent Payment', 900.00,
+        (SELECT id FROM categories WHERE name = 'Rent'),
+        (SELECT id FROM accounts WHERE name = 'Debit Card'));
+
+INSERT INTO bookings (booking_date, description, amount, category_id, account_id)
+VALUES ('2024-05-01', 'Electricity Bill', 100.25,
+        (SELECT id FROM categories WHERE name = 'Household'),
+        (SELECT id FROM accounts WHERE name = 'Debit Card'));
+
+INSERT INTO bookings (booking_date, description, amount, category_id, account_id)
+VALUES ('2024-05-05', 'Birthday Gift', 50.00,
+        (SELECT id FROM categories WHERE name = 'Gift'),
+        (SELECT id FROM accounts WHERE name = 'Cash'));
+
+INSERT INTO bookings (booking_date, description, amount, category_id, account_id)
+VALUES ('2024-05-10', 'Gym Membership', 30.00,
+        (SELECT id FROM categories WHERE name = 'Sport'),
+        (SELECT id FROM accounts WHERE name = 'Debit Card'));
+
+INSERT INTO bookings (booking_date, description, amount, category_id, account_id)
+VALUES ('2024-05-15', 'Concert Tickets', 120.00,
+        (SELECT id FROM categories WHERE name = 'Entertainment'),
+        (SELECT id FROM accounts WHERE name = 'Cash'));
+
+INSERT INTO bookings (booking_date, description, amount, category_id, account_id)
+VALUES ('2024-05-20', 'Clothing Purchase', 200.00,
+        (SELECT id FROM categories WHERE name = 'Cloth'),
+        (SELECT id FROM accounts WHERE name = 'Debit Card'));
+

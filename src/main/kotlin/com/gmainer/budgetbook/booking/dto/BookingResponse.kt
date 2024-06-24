@@ -7,4 +7,8 @@ data class BookingResponse(
     val id: Long = 0,
     val bookingDate: LocalDate,
     val amount: BigDecimal,
+    val categoryId: Long,
+    val categoryName: String,
+    val accountId: Long,
+    val accountName: String,
 )

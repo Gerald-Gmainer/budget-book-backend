@@ -5,5 +5,8 @@ import java.time.LocalDate
 
 data class BookingCreateRequest(
     val bookingDate: LocalDate,
-    val amount: BigDecimal
+    val amount: BigDecimal,
+    val description: String,
+    val categoryId: Long,
+    val accountId: Long,
 )
