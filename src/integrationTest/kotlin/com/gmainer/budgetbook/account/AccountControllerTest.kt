@@ -16,7 +16,7 @@ class AccountControllerTest : AuthIntegration() {
     @Test
     fun `should get all accounts`() {
         val auth = getUserAuthentication(TestUser.JoeMama)
-        println(auth.token)
+
         get("/accounts", auth.token).andExpect {
             status { isOk() }
             jsonPath("$.length()").value(2)
@@ -27,9 +27,10 @@ class AccountControllerTest : AuthIntegration() {
 
     @Test
     fun `should get account by id`() {
+        val auth = getUserAuthentication(TestUser.JoeMama)
         val cashId = jdbcTemplate.queryForObject("SELECT id FROM accounts WHERE name = 'Cash'", Long::class.java)
 
-        get("/accounts/$cashId", "6a60e7c7-bd8f-45f8-8842-916eb7967b71").andExpect {
+        get("/accounts/$cashId", auth.token).andExpect {
             status { isOk() }
             jsonPath("$.name").value("Cash")
             jsonPath("$.iconName").value("cash-multiple")
@@ -40,7 +41,9 @@ class AccountControllerTest : AuthIntegration() {
 
     @Test
     fun `should return 404 for non-existent account`() {
-        get("/accounts/999", "asdf")
+        val auth = getUserAuthentication(TestUser.JoeMama)
+
+        get("/accounts/999", auth.token)
             .andExpect { status { isNotFound() } }
     }
 }

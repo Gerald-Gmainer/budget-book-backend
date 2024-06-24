@@ -40,11 +40,12 @@ CREATE TABLE category_colors
 
 CREATE TABLE categories
 (
-    id       SERIAL PRIMARY KEY,
-    name     text                                NOT NULL,
-    icon_id  int references category_icons (id)  NOT NULL,
-    color_id int references category_colors (id) NOT NULL,
-    type     category_type                       NOT NULL
+    id        SERIAL PRIMARY KEY,
+    name      text                                NOT NULL,
+    icon_id   int references category_icons (id)  NOT NULL,
+    color_id  int references category_colors (id) NOT NULL,
+    type      category_type                       NOT NULL,
+    parent_id INT REFERENCES categories (id) DEFAULT NULL
 );
 
 CREATE TABLE bookings
@@ -62,41 +63,4 @@ CREATE TABLE bookings
 
 ---
 
-INSERT INTO account_colors (code, name, ui_order)
-VALUES ('#FF5733', 'red', 1),
-       ('#33FF57', 'green', 2),
-       ('#3366FF', 'blue', 3),
-       ('#c2c226', 'yellow', 4),
-       ('#FF33FF', 'pink', 5),
-       ('#FF6633', 'orange', 6),
-       ('#9933FF', 'purple', 7),
-       ('#33FFFF', 'cyan', 8),
-       ('#6cb622', 'lime_green', 9),
-       ('#FF9966', 'peach', 10),
-       ('#3399CC', 'teal', 11),
-       ('#808080', 'gray', 12);
-
-INSERT INTO account_icons (name, ui_order)
-VALUES ('cash-multiple', 1),
-       ('wallet-giftcard', 2),
-       ('credit-card-outline', 3),
-       ('bank', 4),
-       ('coin', 5),
-       ('credit-card-plus', 6),
-       ('wallet', 7),
-       ('shopping', 8),
-       ('credit-card-clock', 9),
-       ('atm', 10);
-
-INSERT INTO accounts (name, icon_id, color_id)
-VALUES ('Cash',
-        (SELECT id FROM account_icons WHERE name = 'cash-multiple'),
-        (SELECT id FROM account_colors WHERE name = 'green'));
-
-INSERT INTO accounts (name, icon_id, color_id)
-VALUES ('Debit Card',
-        (SELECT id FROM account_icons WHERE name = 'wallet-giftcard'),
-        (SELECT id FROM account_colors WHERE name = 'orange'));
-
---
 
