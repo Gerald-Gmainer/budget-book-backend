@@ -1,0 +1,132 @@
+trigger:
+    branches:
+        - main
+
+variables:
+    JDK_VERSION: '21'
+    JDK_ARCHITECTURE: 'x64'
+    GRADLE_WRAPPER_FILE: 'gradlew'
+    GRADLE_USER_HOME: '$(Pipeline.Workspace)/.gradle'
+
+stages:
+    -   stage: buildVariables
+        jobs:
+            -   job: resolveBuildVersions
+                displayName: 'Resolve Build Variables'
+                steps:
+                    -   script: |
+                            echo "Resolving build variables..."
+
+                            # Generate a unique identifier for the build
+                            TIMESTAMP=$(date +%Y%m%d%H%M%S)
+                            COMMIT_HASH=$(Build.SourceVersion)
+                            BRANCH_NAME=$(Build.SourceBranchName)
+
+                            # Check if the build was triggered by a tag
+                            TAG_NAME=$(Build.SourceBranch)
+                            if [[ $TAG_NAME =~ ^refs/tags/v[0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)*$ ]]; then
+                              # Extract version number from the tag
+                              VERSION_NUMBER=${TAG_NAME#refs/tags/v}
+                              BUILD_VERSION="${VERSION_NUMBER}"
+                              JAVA_BUILD_VERSION="${BUILD_VERSION}"
+                              NPM_BUILD_VERSION="v${BUILD_VERSION}"
+                            else
+                              # Create and set BUILD_VERSION
+                              BUILD_VERSION="${BRANCH_NAME}.${TIMESTAMP}.${COMMIT_HASH}"
+                              JAVA_BUILD_VERSION="${BUILD_VERSION}-SNAPSHOT"
+                              NPM_BUILD_VERSION="v0.0.0-${BUILD_VERSION}"
+                            fi
+
+                            # Output the generated variables for azure pipeline variables
+                            echo "##vso[task.setvariable variable=BUILD_VERSION;isOutput=true]${BUILD_VERSION}"
+                            echo "##vso[task.setvariable variable=JAVA_BUILD_VERSION;isOutput=true]${JAVA_BUILD_VERSION}"
+                            echo "##vso[task.setvariable variable=NPM_BUILD_VERSION;isOutput=true]${NPM_BUILD_VERSION}"
+
+                            # Output the generated variables for debugging purposes
+                            echo "BUILD_VERSION=${BUILD_VERSION}"
+                            echo "JAVA_BUILD_VERSION=${JAVA_BUILD_VERSION}"
+                            echo "NPM_BUILD_VERSION=${NPM_BUILD_VERSION}"
+                        displayName: 'Set Build Variables'
+                        name: Versions
+
+    -   stage: build
+        dependsOn: buildVariables
+        jobs:
+            -   job: build
+                displayName: 'Build'
+                steps:
+                    -   task: CacheBeta@0
+                        inputs:
+                            key: 'gradle | "$(Agent.OS)" | gradle-wrapper | gradle-caches'
+                            path: '$(GRADLE_USER_HOME)'
+                            restoreKeys: |
+                                gradle | "$(Agent.OS)" | gradle-wrapper
+                                gradle | "$(Agent.OS)" | gradle-caches
+                    -   task: Gradle@3
+                        inputs:
+                            gradleWrapperFile: '$(GRADLE_WRAPPER_FILE)'
+                            options: '-g $(GRADLE_USER_HOME) --build-cache'
+                            tasks: 'clean assemble'
+                            javaHomeOption: 'JDKVersion'
+                            jdkVersionOption: '$(JDK_VERSION)'
+                            jdkArchitectureOption: '$(JDK_ARCHITECTURE)'
+                        displayName: 'Run Gradle Build'
+                    -   publish: $(System.DefaultWorkingDirectory)/build
+                        artifact: build
+
+    -   stage: lint
+        dependsOn: build
+        jobs:
+            -   job: lint
+                displayName: 'Lint'
+                steps:
+                    -   download: current
+                        artifact: build
+                    -   task: Gradle@3
+                        inputs:
+                            gradleWrapperFile: '$(GRADLE_WRAPPER_FILE)'
+                            options: '-g $(GRADLE_USER_HOME) --build-cache'
+                            tasks: 'detekt'
+                            javaHomeOption: 'JDKVersion'
+                            jdkVersionOption: '$(JDK_VERSION)'
+                            jdkArchitectureOption: '$(JDK_ARCHITECTURE)'
+                        displayName: 'Run Gradle Detekt'
+
+    -   stage: tests
+        dependsOn: lint
+        jobs:
+            -   job: unitTests
+                displayName: 'Unit tests'
+                steps:
+                    -   download: current
+                        artifact: build
+                    -   task: Gradle@3
+                        inputs:
+                            gradleWrapperFile: '$(GRADLE_WRAPPER_FILE)'
+                            options: '-g $(GRADLE_USER_HOME) --build-cache'
+                            tasks: 'test'
+                            javaHomeOption: 'JDKVersion'
+                            jdkVersionOption: '$(JDK_VERSION)'
+                            jdkArchitectureOption: '$(JDK_ARCHITECTURE)'
+                        displayName: 'Run Gradle Test'
+            -   job: integrationTests
+                displayName: 'Integration Tests'
+                steps:
+                    -   download: current
+                        artifact: build
+                    -   task: CacheBeta@0
+                        inputs:
+                            key: 'gradle | "$(Agent.OS)" | gradle-wrapper | gradle-caches'
+                            path: '$(GRADLE_USER_HOME)'
+                            restoreKeys: |
+                                gradle | "$(Agent.OS)" | gradle-wrapper
+                                gradle | "$(Agent.OS)" | gradle-caches
+                    -   task: Gradle@3
+                        inputs:
+                            gradleWrapperFile: '$(GRADLE_WRAPPER_FILE)'
+                            options: '-g $(GRADLE_USER_HOME) --build-cache'
+                            tasks: 'integrationTest'
+                            javaHomeOption: 'JDKVersion'
+                            jdkVersionOption: '$(JDK_VERSION)'
+                            jdkArchitectureOption: '$(JDK_ARCHITECTURE)'
+                        displayName: 'Run Integration Tests'

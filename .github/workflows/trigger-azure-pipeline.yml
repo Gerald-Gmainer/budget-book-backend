@@ -1,0 +1,29 @@
+name: Trigger Azure DevOps Pipeline
+
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
+
+jobs:
+    trigger-pipeline:
+        runs-on: ubuntu-latest
+
+        steps:
+            -   name: Checkout code
+                uses: actions/checkout@v2
+
+            -   name: Trigger Azure DevOps Pipeline
+                run: |
+                    AZURE_DEVOPS_ORG_URL="https://dev.azure.com/ggbudgetbook"
+                    AZURE_DEVOPS_PROJECT="budget-book"
+                    AZURE_DEVOPS_PIPELINE_ID="yourpipelineid"
+
+                    curl -u :${{ secrets.AZURE_DEVOPS_PAT }} \
+                      -X POST \
+                      -H "Content-Type: application/json" \
+                      -d '{"resources":{}}' \
+                      "$AZURE_DEVOPS_ORG_URL/$AZURE_DEVOPS_PROJECT/_apis/pipelines/$AZURE_DEVOPS_PIPELINE_ID/runs?api-version=6.0-preview.1"
