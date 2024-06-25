@@ -78,7 +78,7 @@ stages:
                         artifact: build
 
     -   stage: tests
-        dependsOn: lint
+        dependsOn: build
         jobs:
             -   job: unitTests
                 displayName: 'Unit tests'
