@@ -29,11 +29,11 @@ class BookingControllerTest : AuthIntegration() {
     @Test
     fun `should get booking by id`() {
         val auth = getUserAuthentication(TestUser.JoeMama)
-        val bookingId = jdbcTemplate.queryForObject("SELECT id FROM bookings WHERE description = 'Beer'", Long::class.java)
+        val bookingId = jdbcTemplate.queryForObject("SELECT id FROM bookings WHERE description = 'Work'", Long::class.java)
 
         get("/bookings/$bookingId", auth.token).andExpect {
             status { isOk() }
-            jsonPath("$.description").value("Dining Out")
+            jsonPath("$.description").value("Work")
         }
     }
 

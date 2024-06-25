@@ -1,4 +1,6 @@
---DELETE
---FROM bookings;
-select 1;
+DELETE
+FROM bookings;
+
+DELETE
+FROM categories;
 

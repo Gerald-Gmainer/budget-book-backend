@@ -4,13 +4,9 @@ import com.gmainer.budgetbook.AuthIntegration
 import com.gmainer.budgetbook.testdata.TestUser
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.jdbc.core.JdbcTemplate
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
 class CategoryControllerTest : AuthIntegration() {
     @Autowired
     private lateinit var jdbcTemplate: JdbcTemplate

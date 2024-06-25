@@ -77,24 +77,6 @@ stages:
                     -   publish: $(System.DefaultWorkingDirectory)/build
                         artifact: build
 
-    -   stage: lint
-        dependsOn: build
-        jobs:
-            -   job: lint
-                displayName: 'Lint'
-                steps:
-                    -   download: current
-                        artifact: build
-                    -   task: Gradle@3
-                        inputs:
-                            gradleWrapperFile: '$(GRADLE_WRAPPER_FILE)'
-                            options: '-g $(GRADLE_USER_HOME) --build-cache'
-                            tasks: 'detekt'
-                            javaHomeOption: 'JDKVersion'
-                            jdkVersionOption: '$(JDK_VERSION)'
-                            jdkArchitectureOption: '$(JDK_ARCHITECTURE)'
-                        displayName: 'Run Gradle Detekt'
-
     -   stage: tests
         dependsOn: lint
         jobs:
