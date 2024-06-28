@@ -52,7 +52,7 @@ class CategoryControllerTest : AuthIntegration() {
             jsonPath("$.name").value("Groceries")
             jsonPath("$.iconName").value("food")
             jsonPath("$.colorCode").value("#FF6633")
-            jsonPath("$.type").value("outcome")
+            jsonPath("$.type").value("OUTCOME")
             jsonPath("$.parentName").value("Food")
         }
     }

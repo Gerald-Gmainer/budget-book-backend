@@ -1,51 +1,51 @@
 INSERT INTO categories (name, type, icon_id, color_id)
 SELECT 'Food',
-       'outcome'::category_type,
+       'OUTCOME',
        (SELECT id FROM category_icons WHERE name = 'food'),
        (SELECT id FROM category_colors WHERE name = 'pink')
 UNION ALL
 SELECT 'Housing',
-       'outcome'::category_type,
+       'OUTCOME',
        (SELECT id FROM category_icons WHERE name = 'briefcase'),
        (SELECT id FROM category_colors WHERE name = 'purple')
 UNION ALL
 SELECT 'Other',
-       'outcome'::category_type,
+       'OUTCOME',
        (SELECT id FROM category_icons WHERE name = 'dots'),
        (SELECT id FROM category_colors WHERE name = 'gray')
 UNION ALL
 SELECT 'Salary',
-       'income'::category_type,
+       'INCOME',
        (SELECT id FROM category_icons WHERE name = 'book'),
        (SELECT id FROM category_colors WHERE name = 'green')
 UNION ALL
 SELECT 'Child Benefit',
-       'income'::category_type,
+       'INCOME',
        (SELECT id FROM category_icons WHERE name = 'school'),
        (SELECT id FROM category_colors WHERE name = 'orange');
 
 
 INSERT INTO categories (name, type, icon_id, color_id, parent_id)
 SELECT 'Groceries',
-       'outcome'::category_type,
+       'OUTCOME',
        (SELECT id FROM category_icons WHERE name = 'food'),
        (SELECT id FROM category_colors WHERE name = 'pink'),
        (SELECT id FROM categories WHERE name = 'Food')
 UNION ALL
 SELECT 'Eating Out',
-       'outcome'::category_type,
+       'OUTCOME',
        (SELECT id FROM category_icons WHERE name = 'food'),
        (SELECT id FROM category_colors WHERE name = 'peach'),
        (SELECT id FROM categories WHERE name = 'Food')
 UNION ALL
 SELECT 'Rent',
-       'outcome'::category_type,
+       'OUTCOME',
        (SELECT id FROM category_icons WHERE name = 'home'),
        (SELECT id FROM category_colors WHERE name = 'blue'),
        (SELECT id FROM categories WHERE name = 'Housing')
 UNION ALL
 SELECT 'Household',
-       'outcome'::category_type,
+       'OUTCOME',
        (SELECT id FROM category_icons WHERE name = 'home'),
        (SELECT id FROM category_colors WHERE name = 'purple'),
        (SELECT id FROM categories WHERE name = 'Housing');
