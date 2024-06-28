@@ -11,6 +11,7 @@ spring:
         properties:
             hibernate:
                 dialect: org.hibernate.dialect.PostgreSQLDialect
+                show_sql: true
 
         hibernate:
             ddl-auto: none
@@ -30,3 +31,7 @@ keycloak-admin:
     username: admin-username
     password: admin-password
 
+logging:
+    level:
+        org.hibernate.SQL: DEBUG
+        org.hibernate.type.descriptor.sql.BasicBinder: TRACE

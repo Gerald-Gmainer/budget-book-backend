@@ -24,6 +24,9 @@ data class Booking(
     @Column(nullable = false)
     var amount: BigDecimal,
 
+    @Column(nullable = true)
+    var description: String?,
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     val category: Category,
@@ -57,7 +60,8 @@ fun BookingCreateRequest.toEntity(category: Category, account: Account): Booking
         null,
         this.bookingDate,
         this.amount,
+        this.description,
         category,
-        account
+        account,
     )
 }

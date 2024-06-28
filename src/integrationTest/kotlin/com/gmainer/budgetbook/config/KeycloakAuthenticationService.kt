@@ -61,7 +61,6 @@ class KeycloakAuthenticationService {
     }
 
     fun decomposeUserAuthentication() {
-        println("omg")
         keycloak.realm(realm).users().list().forEach { user ->
             keycloak.realm(realm).users().delete(user.id)
         }

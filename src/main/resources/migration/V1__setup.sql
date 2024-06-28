@@ -1,5 +1,3 @@
-CREATE TYPE category_type AS ENUM ('income', 'outcome');
-
 CREATE TABLE account_icons
 (
     id       SERIAL PRIMARY KEY,
@@ -44,7 +42,7 @@ CREATE TABLE categories
     name      text                                NOT NULL,
     icon_id   int references category_icons (id)  NOT NULL,
     color_id  int references category_colors (id) NOT NULL,
-    type      category_type                       NOT NULL,
+    type      varchar                             NOT NULL,
     parent_id INT REFERENCES categories (id) DEFAULT NULL
 );
 

@@ -3,6 +3,7 @@ package com.gmainer.budgetbook.category.model
 import com.gmainer.budgetbook.category.dto.CategoryResponse
 import jakarta.persistence.*
 
+
 @Entity
 @Table(name = "categories")
 data class Category(
@@ -22,9 +23,9 @@ data class Category(
     @JoinColumn(name = "color_id", nullable = false)
     val color: CategoryColor,
 
-    @Convert(converter = CategoryTypeConverter::class)
-    @Column(nullable = false)
-    val type: CategoryType,
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type")
+    val categoryType: CategoryType,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
@@ -37,7 +38,7 @@ fun Category.toResponse(): CategoryResponse {
         name = this.name,
         iconName = this.icon.name,
         colorCode = this.color.code,
-        type = this.type,
+        type = this.categoryType,
         parentId = this.parent?.id,
         parentName = this.parent?.name
     )
