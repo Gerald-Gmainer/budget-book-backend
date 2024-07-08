@@ -18,6 +18,14 @@ class TestDataCategoryService(
     @Transactional
     fun insertTestCategories(): String {
         val categories = mutableListOf<Category>()
+        categories.addAll(insertTestParentCategories())
+        categories.addAll(insertTestChildrenCategories())
+        return "Inserted ${categories.size} rows into categories table"
+    }
+
+    @Transactional
+    fun insertTestParentCategories(): List<Category> {
+        val categories = mutableListOf<Category>()
         categories.add(create("Salary", CategoryType.INCOME, "food", "green"))
         categories.add(create("Child Benefit", CategoryType.INCOME, "home", "blue"))
 
@@ -27,6 +35,15 @@ class TestDataCategoryService(
         categories.add(create("Transport", CategoryType.OUTCOME, "car", "yellow"))
         categories.add(create("Gift", CategoryType.OUTCOME, "gift", "pink"))
         categories.add(create("Other", CategoryType.OUTCOME, "dots", "gray"))
+
+        categoryRepository.saveAll(categories)
+
+        return categories
+    }
+
+    @Transactional
+    fun insertTestChildrenCategories(): List<Category> {
+        val categories = mutableListOf<Category>()
 
         categories.add(create("Groceries", CategoryType.OUTCOME, "food", "orange", "Food"))
         categories.add(create("Enjoyment", CategoryType.OUTCOME, "music", "purple", "Food"))
@@ -51,7 +68,7 @@ class TestDataCategoryService(
 
         categoryRepository.saveAll(categories)
 
-        return "Inserted ${categories.size} rows into categories table"
+        return categories
     }
 
     private fun create(name: String, type: CategoryType, iconName: String, colorName: String, parentName: String? = null): Category {

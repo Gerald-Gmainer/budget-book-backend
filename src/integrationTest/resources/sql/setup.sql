@@ -82,5 +82,10 @@ VALUES ('2024-06-05', 'Electricity Bill', 100.25,
         (SELECT id FROM categories WHERE name = 'Household'),
         (SELECT id FROM accounts WHERE name = 'Debit Card'));
 
+INSERT INTO bookings (booking_date, description, amount, category_id, account_id)
+VALUES ('2024-06-17', 'minor thing', 50,
+        (SELECT id FROM categories WHERE name = 'Other'),
+        (SELECT id FROM accounts WHERE name = 'Debit Card'));
+
 
 

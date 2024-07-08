@@ -48,6 +48,7 @@ fun Booking.toResponse(): BookingResponse {
         id = this.id!!,
         bookingDate = this.bookingDate,
         amount = this.amount,
+        description = this.description,
         categoryId = this.category.id,
         categoryName = this.category.name,
         accountId = this.account.id,
